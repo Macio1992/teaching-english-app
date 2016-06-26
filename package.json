@@ -1,0 +1,14 @@
+{
+  "name": "teaching-english-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": "6.2.1"
+    }
+}
