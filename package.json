@@ -4,11 +4,14 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
   "engines": {
     "node": "6.2.1"
-    }
+  },
+  "dependencies": {
+    "express": "^4.14.0"
+  }
 }
