@@ -1,0 +1,21 @@
+{
+  "name": "teaching-english-app",
+  "description": "",
+  "main": "server.js",
+  "authors": [
+    "MaciejZbierowski <maix19bep@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/Macio1992/teaching-english-app",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.0.0"
+  }
+}

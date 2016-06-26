@@ -10,6 +10,8 @@ var port = process.env.PORT || 8080;
 var configDB = require('./config/database');
 mongoose.connect(configDB.url);
 
+var students = require('./routes/students');
+
 mongoose.connection.on('open', function(){
     console.log('Connected to MongoDB');
 });
@@ -17,6 +19,16 @@ mongoose.connection.on('open', function(){
 mongoose.connection.on('error', function(){
     console.err.bind(console, 'MongoDB Error');
 });
+
+app.use('/js/jquery.min.js', express.static(__dirname + '/bower_components/jquery/dist/jquery.min.js'));
+app.use(morgan('dev'));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
+app.use(methodOverride());
+
+app.use('/api', students);
 
 /*app.get('/', function(req, res){
     res.send({message: 'hooray! welcome to our app'});
