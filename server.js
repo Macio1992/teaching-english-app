@@ -35,7 +35,7 @@ app.use('/api', students);
 });*/
 
 app.get('*', function(req, res){
-    res.sendFile(__dirname + '/public/index.html');
+    res.sendFile(__dirname + '/public/views/index.html');
 });
 
 app.listen(port, function(){
