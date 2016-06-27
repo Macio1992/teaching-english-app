@@ -21,6 +21,7 @@ mongoose.connection.on('error', function(){
 });
 
 app.use('/js/jquery.min.js', express.static(__dirname + '/bower_components/jquery/dist/jquery.min.js'));
+
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({
     extended: true
@@ -34,9 +35,11 @@ app.use('/api', students);
     res.send({message: 'hooray! welcome to our app'});
 });*/
 
-app.get('*', function(req, res){
-    res.sendFile(__dirname + '/public/views/index.html');
-});
+// app.get('*', function(req, res){
+//     res.sendFile(__dirname + '/public/views/index.html');
+// });
+var serveStatic = require('serve-static');
+app.use(serveStatic(__dirname, {'index': ['public/index.html']}))
 
 app.listen(port, function(){
     console.log('localhost:' + port);

@@ -1,0 +1,21 @@
+<div>
+    <h2>{{ student.firstName }} {{student.lastName}}</h2>
+
+    <!--Deleting student-->
+    <a href="#/">
+        <button ng-click="deleteStudent(student._id)">Delete student</button>
+    </a>
+
+    <div ng-hide="editMode">
+        <div>
+            <p ng-if="student.age">age: {{student.age}}</p>
+            <p>
+                <button ng-click="toggleEdit()">Edit</button>
+                <a href="#/">Back</a>
+            </p>
+        </div>
+    </div>
+
+</div>
+
+<div ng-include="studentFormUrl"></div>

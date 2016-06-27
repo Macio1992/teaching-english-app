@@ -1,0 +1,17 @@
+<div>
+    <h2>Students</h2>
+
+    <a href="#/new/student">New student</a>
+
+    <table>
+        <tbody>
+            <tr ng-repeat="student in students">
+                <td>
+                    <a href="#/student/{{student._id}}">
+                        {{student.firstName}} {{student.lastName}}
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

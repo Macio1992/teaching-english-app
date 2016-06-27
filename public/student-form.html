@@ -1,0 +1,20 @@
+<h2>Create a student</h2>
+
+<div>
+    <p>
+        <label>First Name (required)</label>
+        <input type="text" ng-model="student.firstName" required>
+    </p>
+    <p>
+        <label>Last Name (required)</label>
+        <input type="text" ng-model="student.lastName" required>
+    </p>
+    <p>
+        <label>Age: </label>
+        <input type="text" ng-model="student.age">
+    </p>
+    <p>
+        <button ng-click="saveStudent(student)">Save</button>
+        <button ng-click="back()">Back</button>
+    </p>
+</div>

@@ -13,11 +13,49 @@ router.route('/students')
         });
     })
     .post(function(req, res){
-        Student.create({
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            age: req.body.age
-        }, function(err){
+        var student = new Student();
+        student.firstName = req.body.firstName;
+        student.lastName = req.body.lastName;
+        student.age = req.body.age;
+
+        student.save(function(err){
+            if(err){
+                res.send(err);
+            } else{
+                res.json(student);
+            }
+        })
+    });
+
+router.route('/students/:student_id')
+    .get(function(req, res){
+        Student.findById(req.params.student_id, function(err, student){
+            if(err){
+                res.send(err);
+            } else {
+                res.json(student);
+            }
+        });
+    })
+    .put(function(req, res){
+        Student.findById(req.params.student_id, function(err, student){
+            if(err){
+                res.send(err);
+            } else {
+                student.firstName = req.body.firstName;
+                student.lastName = req.body.lastName;
+                student.age = req.body.age;
+
+                student.save(function(err){
+                    res.json(student);
+                });
+            }
+        });
+    })
+    .delete(function(req, res){
+        Student.remove({
+            _id: req.params.student_id
+        }, function(err, student){
             if(err){
                 res.send(err);
             }
