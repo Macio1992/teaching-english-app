@@ -2,7 +2,7 @@ angular.module('studentsApp', ['ngRoute'])
     .config(function($routeProvider){
         $routeProvider
             .when('/', {
-                templateUrl: '/public/students.html',
+                templateUrl: '/public/views/students.html',
                 controller: 'StudentsController',
                 resolve: {
                     students: function(Students){
@@ -12,11 +12,11 @@ angular.module('studentsApp', ['ngRoute'])
             })
             .when('/new/student', {
                 controller: 'NewStudentController',
-                templateUrl: '/public/student-form.html'
+                templateUrl: '/public/views/student-form.html'
             })
             .when('/student/:studentId', {
                 controller: 'EditStudentController',
-                templateUrl: '/public/student.html'
+                templateUrl: '/public/views/student.html'
             })
             .otherwise({
                 redirectTo: '/'
@@ -88,7 +88,7 @@ angular.module('studentsApp', ['ngRoute'])
 
         $scope.toggleEdit = function() {
             $scope.editMode = true;
-            $scope.studentFormUrl = "/public/student-form.html";
+            $scope.studentFormUrl = "/public/views/student-form.html";
         }
 
         $scope.back = function() {
