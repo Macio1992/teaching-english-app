@@ -1,3 +1,4 @@
+/* jshint devel: true*/
 angular.module('studentsApp', ['ngRoute'])
     .config(function($routeProvider){
         $routeProvider
@@ -20,7 +21,7 @@ angular.module('studentsApp', ['ngRoute'])
             })
             .otherwise({
                 redirectTo: '/'
-            })
+            });
     })
     .service('Students', function($http){
         this.getStudents = function() {
@@ -29,14 +30,14 @@ angular.module('studentsApp', ['ngRoute'])
             }, function(response){
                 console.log('Error finding students');
             });
-        }
+        };
         this.createStudent = function(student){
             return $http.post('api/students', student).then(function(response){
                 return response;
             }, function(response){
-                console.log('Error creating student')
+                console.log('Error creating student');
             });
-        }
+        };
         this.getStudent = function(studentId){
             var url = 'api/students/' + studentId;
             return $http.get(url).then(function(response){
@@ -44,7 +45,7 @@ angular.module('studentsApp', ['ngRoute'])
             }, function(response){
                 console.log('Error finding this student');
             });
-        }
+        };
         this.editStudent = function(student){
             var url = 'api/students/' + student._id;
             return $http.put(url, student).then(function(response){
@@ -52,7 +53,7 @@ angular.module('studentsApp', ['ngRoute'])
             }, function(response){
                 console.log('Error editing this student');
             });
-        }
+        };
         this.deleteStudent = function(studentId) {
             var url = 'api/students/' + studentId;
             return $http.delete(url).then(function(response){
@@ -60,7 +61,7 @@ angular.module('studentsApp', ['ngRoute'])
             }, function(response){
                 console.log('Error deleting this student');
             });
-        }
+        };
     })
     .controller('StudentsController', function(students, $scope){
         $scope.students = students.data;
@@ -68,7 +69,7 @@ angular.module('studentsApp', ['ngRoute'])
     .controller('NewStudentController', function($scope, $location, Students){
         $scope.back = function(){
             $location.path('#/');
-        }
+        };
 
         $scope.saveStudent = function(student){
             Students.createStudent(student).then(function(doc){
@@ -77,7 +78,7 @@ angular.module('studentsApp', ['ngRoute'])
             }, function(response){
                 alert(response);
             });
-        }
+        };
     })
     .controller('EditStudentController', function($scope, $routeParams, Students) {
         Students.getStudent($routeParams.studentId).then(function(doc){
@@ -89,20 +90,20 @@ angular.module('studentsApp', ['ngRoute'])
         $scope.toggleEdit = function() {
             $scope.editMode = true;
             $scope.studentFormUrl = "/public/views/student-form.html";
-        }
+        };
 
         $scope.back = function() {
             $scope.editMode = false;
             $scope.studentFormUrl = "";
-        }
+        };
 
         $scope.saveStudent = function(student){
             Students.editStudent(student);
             $scope.editMode = false;
             $scope.studentFormUrl = "";
-        }
+        };
 
         $scope.deleteStudent = function(studentId) {
             Students.deleteStudent(studentId);
-        }
+        };
     });

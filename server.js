@@ -1,36 +1,18 @@
+/* jshint node: true */
 var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
-var methodOverride = require('method-override');
-var serveStatic = require('serve-static');
+var cookieParser = require('cookie-parser');
+var expressSession = require('express-session');
+var path = require('path');
+var passport = require('passport');
+//var serveStatic = require('serve-static');
 
 var port = process.env.PORT || 8080;
 var students = require('./routes/students');
-var User = require('./models/user');
-
-// Configure Passport
-var passport = require('passport');
-var expressSession = require('express-session');
-
-app.use(expressSession({
-    secret: 'mySecretKey',
-    resave: false,
-    saveUninitialized: false
-}));
-app.use(passport.initialize());
-app.use(passport.session());
-
-passport.serializeUser(function(user, done){
-    done(null, user._id);
-});
-
-passport.deserializeUser(function(id, done){
-    User.findById(id, function(err, user){
-        done(err, user);
-    });
-});
+var users = require('./routes/users');
 
 var configDB = require('./config/database');
 mongoose.connect(configDB.url);
@@ -43,15 +25,27 @@ mongoose.connection.on('error', function(){
     console.err.bind(console, 'MongoDB Error');
 });
 
-app.use('/js/jquery.min.js', express.static(__dirname + '/bower_components/jquery/dist/jquery.min.js'));
+app.set('view engine', 'ejs');
 app.use(morgan('dev'));
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({
-    extended: true
+    extended: false
 }));
 app.use(bodyParser.json());
-app.use(methodOverride());
+app.use(expressSession({
+    secret: 'securredSession',
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.static(path.join(__dirname, 'bower_components')));
+app.use(express.static(path.join(__dirname, 'public')));
+
+//app.use(serveStatic(__dirname, {'index': ['public/views/index.html']}));
+
 app.use('/api', students);
-app.use(serveStatic(__dirname, {'index': ['public/views/index.html']}))
+app.use('/', users);
 
 app.listen(port, function(){
     console.log('localhost:' + port);
