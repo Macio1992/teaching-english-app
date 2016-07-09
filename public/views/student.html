@@ -2,16 +2,16 @@
     <h2>{{ student.firstName }} {{student.lastName}}</h2>
 
     <!--Deleting student-->
-    <a href="#/">
-        <button ng-click="deleteStudent(student._id)">Delete student</button>
-    </a>
+    
+    <button ng-click="deleteStudent(student._id)">Delete student</button>
+    
 
     <div ng-hide="editMode">
         <div>
             <p ng-if="student.age">age: {{student.age}}</p>
             <p>
                 <button ng-click="toggleEdit()">Edit</button>
-                <a href="#/">Back</a>
+                <a href="#/students">Back</a>
             </p>
         </div>
     </div>

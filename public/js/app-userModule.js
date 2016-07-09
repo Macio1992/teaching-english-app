@@ -1,3 +1,4 @@
+/* jshint devel: true*/
 var app = angular.module('userModule', ['ngResource', 'ngRoute'])
     .config(function($routeProvider, $locationProvider, $httpProvider){
         var checkLoggedin = function($q, $timeout, $http, $location, $rootScope) {
@@ -42,6 +43,24 @@ var app = angular.module('userModule', ['ngResource', 'ngRoute'])
                 templateUrl: '/views/login.html',
                 controller: 'LoginCtrl'
             })
+            .when('/students', {
+                templateUrl: '/views/students.html',
+                controller: 'StudentsController',
+                resolve: {
+                    //loggedin: checkLoggedin,
+                    students: function(Students){
+                        return Students.getStudents();
+                    }
+                }
+            })
+            .when('/new/student', {
+                controller: 'NewStudentController',
+                templateUrl: '/views/student-form.html'
+            })
+            .when('/student/:studentId', {
+                templateUrl: '/views/student.html',
+                controller: 'EditStudentController'
+            })
             .otherwise({
                 redirectTo: '/'
             });
@@ -53,6 +72,48 @@ var app = angular.module('userModule', ['ngResource', 'ngRoute'])
             $http.post('/logout');
         };
     });
+
+app.service('Students', function($http){
+    this.getStudents = function() {
+        return $http.get('/api/students').then(function(response){
+            return response;
+        }, function(response){
+            console.log('Error finding students');
+        });
+    };
+    this.createStudent = function(student) {
+        return $http.post('/api/students', student).then(function(response){
+            return response;
+        }, function(response) {
+            console.log('Error creating student');
+        });
+    };
+    this.getStudent = function(studentId) {
+        var url = '/api/students/' + studentId;
+        return $http.get(url).then(function(response) {
+            return response;
+        }, function(response) {
+            console.log('Error finding this student');
+        });
+    };
+    this.editStudent = function(student) {
+        var url = '/api/students/' + student._id;
+        return $http.put(url, student).then(function(response) {
+            return response;
+        }, function(response) {
+            console.log('Error deleting this student');
+        });
+    };
+    this.deleteStudent = function(studentId) {
+        var url = '/api/students/' + studentId;
+        return $http.delete(url).then(function(response) {
+            return response;
+        }, function(response) {
+            console.log('Error deleting this student');
+        });
+    };
+});
+
 app.controller('LoginCtrl', function($scope, $rootScope, $http, $location) {
     $scope.user = {};
     
@@ -79,4 +140,63 @@ app.controller('AdminCtrl', function($scope, $http){
         for(var i in users)
             $scope.users.push(users[i]);
     });
+});
+
+app.controller('StudentsController', function(students, $scope){
+    var length = students.data.length;
+    if(length === 0)
+        $scope.message = 'There are no students';
+    else {
+        $scope.students = students.data;
+        $scope.message = '';
+    }
+        
+});
+
+app.controller('NewStudentController', function($scope, $location, Students){
+    $scope.back = function() {
+        $location.url('/students');
+    };
+    
+    $scope.saveStudent = function(student) {
+        Students.createStudent(student).then(function(doc){
+            var studentUrl = '/student/' + doc.data._id;
+            //$location.url('/students');
+            $location.url(studentUrl);
+        }, function(response) {
+            console.log(response);
+        });
+    };
+});
+
+app.controller('EditStudentController', function($scope, $location, $routeParams, Students) {
+    Students.getStudent($routeParams.studentId).then(function(doc){
+        $scope.student = doc.data;
+    }, function(response) {
+        console.log(response);
+    });
+    
+    $scope.toggleEdit = function() {
+        $scope.editMode = true;
+        $scope.studentFormUrl = '/views/student-form.html';
+    };
+    
+    $scope.back = function() {
+        $scope.editMode = false;
+        $scope.studentFormUrl = "";
+    };
+    
+    $scope.saveStudent = function(student) {
+        Students.editStudent(student);
+        $scope.editMode = false;
+        $scope.studentFormUrl = '';
+    };
+    
+    $scope.deleteStudent = function(studentId) {
+        
+        Students.deleteStudent(studentId).then(function(){
+            $location.url('/students');
+        });
+        
+    };
 });
