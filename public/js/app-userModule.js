@@ -29,9 +29,9 @@ var app = angular.module('userModule', ['ngResource', 'ngRoute'])
             };
         });
         $routeProvider
-            .when('/', {
+            /*.when('/', {
                 templateUrl: '/views/main.html'
-            })
+            })*/
             .when('/admin', {
                 templateUrl: '/views/admin.html',
                 controller: 'AdminCtrl',
@@ -39,7 +39,7 @@ var app = angular.module('userModule', ['ngResource', 'ngRoute'])
                     loggedin: checkLoggedin
                 }
             })
-            .when('/login', {
+            .when('/', {
                 templateUrl: '/views/login.html',
                 controller: 'LoginCtrl'
             })
@@ -114,8 +114,19 @@ app.service('Students', function($http){
     };
 });
 
-app.controller('LoginCtrl', function($scope, $rootScope, $http, $location) {
+app.service('Users', function($http){
+    this.createUser = function(user){
+        return $http.post('/register', user).then(function(response){
+            return response;
+        }, function(response){
+            console.log(response);
+        });
+    };
+});
+
+app.controller('LoginCtrl', function($scope, $rootScope, $http, $location, Users) {
     $scope.user = {};
+    $scope.createUser  = {};
     
     $scope.login = function() {
         $http.post('/login', {
@@ -129,6 +140,18 @@ app.controller('LoginCtrl', function($scope, $rootScope, $http, $location) {
         .error(function(){
             $rootScope.message = 'Authentication failed';
             $location.url('/login');
+        });
+    };
+    $scope.register = function() {
+        $http.post('/register', {
+            username: $scope.createUser.username,
+            password: $scope.createUser.password
+        })
+        .success(function(){
+            $location.url('/login');
+        })
+        .error(function(){
+            console.log('error adding user');
         });
     };
 });

@@ -52,6 +52,20 @@ app.get('/users', auth, function(req, res){
     });
 });
 
+app.post('/register', function(req, res){
+    var user = new User();
+    user.username = req.body.username;
+    user.password = req.body.password;
+    
+    user.save(function(err){
+        if(err){
+            res.send(err);
+        } else {
+            res.json(user);
+        }
+    });
+});
+
 app.get('/loggedin', function(req, res){
     res.send(req.isAuthenticated() ? req.user : '0');
 });
