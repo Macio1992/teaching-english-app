@@ -1,31 +1,36 @@
-<h1>Register</h1>
+<section id="forms">
+    <div id="register">
+        <h1>Register</h1>
 
-<form ng-submit="register()">
-    <p>
-        <label>Username</label>
-        <input type="text" ng-model="createUser.username">
-    </p>
-    <p>
-        <label>Password</label>
-        <input type="text" ng-model="createUser.password">
-    </p>
-    <p>
-        <input type="submit" value="Register">
-    </p>
-</form>
+        <form ng-submit="register()">
+            <p>
+                <label>Username</label>
+                <input type="text" ng-model="createUser.username">
+            </p>
+            <p>
+                <label>Password</label>
+                <input type="text" ng-model="createUser.password">
+            </p>
+            <p>
+                <input type="submit" value="Register">
+            </p>
+        </form>
+    </div>
+    <div id="login">
+        <h1>Login</h1>
 
-<h1>Login</h1>
-
-<form ng-submit="login()">
-    <p>
-        <label>Username</label>
-        <input type="text" ng-model="user.username" />
-    </p>
-    <p>
-        <label>Password</label>
-        <input type="text" ng-model="user.password" />
-    </p>
-    <p>
-        <button type="submit">Login</button>
-    </p>
-</form>
+        <form ng-submit="login()">
+            <p>
+                <label>Username</label>
+                <input type="text" ng-model="user.username" />
+            </p>
+            <p>
+                <label>Password</label>
+                <input type="text" ng-model="user.password" />
+            </p>
+            <p>
+                <button type="submit">Login</button>
+            </p>
+        </form>
+    </div>
+</section>
